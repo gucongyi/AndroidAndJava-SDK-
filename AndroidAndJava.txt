@@ -1,0 +1,12 @@
+Unity 调用Java
+//注释1
+	 AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+	 AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+	 jo.Call("StartActivity0","第一个Activity");
+Java调用Unity
+    UnityPlayer.UnitySendMessage("Main Camera","messgae",edit.getText().toString());
+	场景中有一个对象名称是Main Camera，上边绑定了一些脚本，其中一个有messgae(string)方法可以接收到java传过来的信息
+	
+	详见博文
+	http://www.xuanyusong.com/archives/676
+	http://www.xuanyusong.com/archives/667
