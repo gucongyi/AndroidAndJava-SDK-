@@ -1,0 +1,46 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 26
+
+
+
+    defaultConfig {
+        minSdkVersion 25
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation files('libs/360SDK.jar')
+    implementation files('libs/android-support-v4.jar')
+    implementation files('libs/classes.jar')
+}
+task makeLibrariesQihoo(type: Jar, dependsOn: ['build']) {
+    archiveName = 'qihoogame.jar'
+    delete 'libs/qihoogame.jar'
+    destinationDir = file('libs')
+
+    def srcClassDir = [project.buildDir.absolutePath + "/intermediates/classes/release"];
+    from srcClassDir
+    exclude('com/huanyz/g01/qihoo/BuildConfig.class')
+    exclude('com/huanyz/g01/qihoo/BuildConfig\$*.class')
+    exclude('**/R.class')
+    exclude('**/R\$*.class')
+
+    include('com/huanyz/g01/qihoo/*.class')
+}
+
+makeLibrariesQihoo.dependsOn(build)

@@ -1,0 +1,47 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 26
+
+
+
+    defaultConfig {
+        minSdkVersion 25
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation files('libs/alipay.jar')
+    implementation files('libs/classes.jar')
+    implementation files('libs/ucgamesdk.jar')
+}
+task makeLibrariesAligame(type: Jar, dependsOn: ['build']) {
+    archiveName = 'aligame.jar'
+    delete 'libs/aligame.jar'
+    destinationDir = file('libs')
+
+    def srcClassDir = [project.buildDir.absolutePath + "/intermediates/classes/release"];
+    from srcClassDir
+    exclude('com/huanyz/g01/aligames/BuildConfig.class')
+    exclude('com/huanyz/g01/aligames/BuildConfig\$*.class')
+    exclude('**/R.class')
+    exclude('**/R\$*.class')
+
+    include('com/huanyz/g01/aligames/*.class')
+    include('cn/uc/gamesdk/unity3d/*.class')
+}
+
+makeLibrariesAligame.dependsOn(build)
